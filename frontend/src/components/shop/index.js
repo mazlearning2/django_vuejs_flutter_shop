@@ -1,0 +1,7 @@
+export { default as HeaderComponent } from './HeaderComponent.vue'
+export { default as FooterComponent } from './FooterComponent.vue'
+export { default as HomeSliderComponent } from './HomeSliderComponent.vue'
+export { default as CategoriesComponent } from './CategoriesComponent.vue'
+export { default as ProductSliderComponent } from './ProductSliderComponent.vue'
+export { default as ProductItemComponent } from './ProductItemComponent.vue'
+export { default as BlogItemComponent } from './BlogItemComponent.vue'
