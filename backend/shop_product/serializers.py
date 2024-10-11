@@ -20,6 +20,11 @@ class ProductCategorySerializer(serializers.ModelSerializer):
         return value
 
     def validate_image(self, value):
+        # اگر هیچ تصویری آپلود نشده باشد، مقدار 'value' خالی است و نباید اعتبارسنجی شود
+        if not value:
+            return None  # مقدار تصویر را دست نزن
+
+        # اگر تصویری آپلود شده باشد، بررسی فرمت فایل
         valid_extensions = ["jpg", "jpeg", "png", "svg"]
         ext = value.name.split(".")[-1].lower()
         if ext not in valid_extensions:
@@ -27,7 +32,6 @@ class ProductCategorySerializer(serializers.ModelSerializer):
                 "Unsupported file extension. Allowed extensions are: jpg, jpeg, png, svg."
             )
         return value
-
 
 # -------------------------- Product Brand Serializer --------------------------
 

@@ -14,7 +14,7 @@ class ProductCategory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products_category_user')
     title = models.CharField(max_length=300)
-    image = models.ImageField(upload_to='product_category_images/', validators=[validate_image_extension])
+    image = models.ImageField(upload_to='product_category_images/', validators=[validate_image_extension], null=True, blank=True)
     status = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

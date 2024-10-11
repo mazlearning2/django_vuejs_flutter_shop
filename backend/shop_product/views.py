@@ -30,7 +30,6 @@ class ProductCategoryListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-
 class ProductCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductCategorySerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrSuperUser]
@@ -41,17 +40,25 @@ class ProductCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
         return ProductCategory.objects.filter(user=self.request.user)
 
     def perform_update(self, serializer):
-        # کاربر استاف نمی‌تواند وضعیت را تغییر دهد
+        # دریافت شیء دسته‌بندی
         category = self.get_object()
+
+        # بررسی اینکه کاربر معمولی نمی‌تواند وضعیت را تغییر دهد
         if not self.request.user.is_superuser and category.status:
             raise PermissionDenied("You cannot modify this category.")
-        serializer.save()
+
+        # اگر تصویری در درخواست نبود، تصویر فعلی دسته‌بندی را حفظ کن
+        if 'image' not in self.request.data or self.request.data.get('image') is None:
+            serializer.save(image=category.image)  # مقدار فعلی را برای تصویر حفظ کن
+        else:
+            serializer.save()
 
     def perform_destroy(self, instance):
-        # فقط سوپر یوزر یا صاحب دسته‌بندی می‌تواند حذف کند
+        # بررسی دسترسی برای حذف دسته‌بندی
         if instance.status and not self.request.user.is_superuser:
             raise PermissionDenied("You cannot delete this category.")
         instance.delete()
+
 
 
 # ----------------------- Product Brand Api View -----------------------
